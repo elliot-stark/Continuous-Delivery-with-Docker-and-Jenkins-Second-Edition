@@ -10,4 +10,20 @@ public class Calculator {
 	public int sum(int a, int b) {
 		return a + b;
 	}
+
+	@Cacheable("difference")
+	public int difference(int a, int b) {
+		return a - b;
+	}
+
+	@Cacheable("product")
+	public int product(int a, int b) {
+		return a * b;
+	}
+
+	@Cacheable("quotient")
+	public int quotient(int a, int b) {
+		return a / b;
+	}
 }
+
