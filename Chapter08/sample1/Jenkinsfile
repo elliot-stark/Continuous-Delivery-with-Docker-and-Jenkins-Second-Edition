@@ -1,5 +1,5 @@
 pipeline {
-     agent any
+     agent {label 'docker-agent'}
      triggers {
           pollSCM('* * * * *')
      }
@@ -23,8 +23,29 @@ pipeline {
           stage("Static code analysis") {
                steps {
                     sh "./gradlew checkstyleMain"
+
+                    publishHTML (
+                         target: [
+                              reportDir: 'Chapter08/sample1/build/reports/checkstyle',   
+                              reportFiles: 'main.html',reportName: "jacoco checkstyle main report"
+                              ]
+                         )
                }
           }
+
+          stage("Checkstyle Test") {
+               steps {
+                    sh "./gradlew checkstyleTest"
+
+                    publishHTML (
+                         target: [
+                              reportDir: 'Chapter08/sample1/build/reports/checkstyle',   
+                              reportFiles: 'test.html',reportName: "jacoco checkstyle"
+                              ]
+                         )
+               }
+          }
+
           stage("Package") {
                steps {
                     sh "./gradlew build"
@@ -86,5 +107,5 @@ pipeline {
                   sh "chmod +x smoke-test.sh && ./smoke-test.sh"
               }
           }
-     }
+
 }

@@ -2,6 +2,10 @@ package com.leszko.calculator;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests each field in calculator
+ */
+
 public class CalculatorTest {
      private Calculator calculator = new Calculator();
 
@@ -9,4 +13,20 @@ public class CalculatorTest {
      public void testSum() {
           assertEquals(5, calculator.sum(2, 3));
      }
+
+     @Test
+     public void testDifference() {
+          assertEquals(1, calculator.difference(3, 2));
+     }
+
+     @Test
+     public void testProduct() {
+          assertEquals(6, calculator.product(2, 3));
+     }
+
+     @Test
+     public void testQuotient() {
+          assertEquals(2, calculator.quotient(4, 2));
+     }
 }
+
