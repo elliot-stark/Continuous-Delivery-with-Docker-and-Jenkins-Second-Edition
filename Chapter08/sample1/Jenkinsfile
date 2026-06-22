@@ -3,22 +3,28 @@ pipeline {
      stages {
           stage("Compile") {
                steps {
-                    sh "./gradlew compileJava"
+                    dir('Chapter08/sample1') {
+                         sh "./gradlew compileJava"
+                    }
                }
           }
           stage("Unit test") {
                steps {
-                    sh "./gradlew test"
+                    dir('Chapter08/sample1') {
+                         sh "./gradlew test"
+                    }
                }
           }
           // Should only activate when .java is changed
           stage ('Code Coverage') {
                when {
-                    changeset "**/*.java"  // Triggers only of .java files are changes
+                    changeset "**/*.java"
                }
                steps {
-                    sh "./gradlew jacocoTestReport"
-                    sh "./gradlew jacocoTestCoverageVerification"
+                    dir('Chapter08/sample1') {
+                         sh "./gradlew jacocoTestReport"
+                         sh "./gradlew jacocoTestCoverageVerification"
+                    }
                }
                post {
                     success {
@@ -34,13 +40,15 @@ pipeline {
                     changeset "**/*.java"  // Triggers only of .java files are changes
                }
                steps {
-                    sh "./gradlew checkstyleMain"
+                    dir('Chapter08/sample1') {
+                         sh "./gradlew checkstyleMain"
                     publishHTML (
                          target: [
-                              reportDir: 'Chapter08/sample1/build/reports/checkstyle',   
+                              reportDir: 'build/reports/checkstyle',   
                               reportFiles: 'main.html',reportName: "jacoco checkstyle main report"
                               ]
                          )
+                    }
                }
                post {
                     success {
@@ -57,14 +65,15 @@ pipeline {
                   changeset "**/*.java"  // Triggers only of .java files are changes
                }
                steps {  
-                    sh "./gradlew checkstyleTest"
-
-                    publishHTML (
-                         target: [
-                              reportDir: 'Chapter08/sample1/build/reports/checkstyle',   
-                              reportFiles: 'test.html',reportName: "jacoco checkstyle"
-                              ]
-                         )
+                    dir('Chapter08/sample1') {
+                         sh "./gradlew checkstyleTest"
+                         publishHTML (
+                              target: [
+                                   reportDir: 'build/reports/checkstyle',   
+                                   reportFiles: 'test.html',reportName: "jacoco checkstyle"
+                                   ]
+                              )
+                    }
                }
                post {
                     success {
@@ -78,63 +87,81 @@ pipeline {
 
           stage("Package") {
                steps {
-                    sh "./gradlew build"
+                    dir('Chapter08/sample1') {
+                         sh "./gradlew build"
+                    }
                }
           }
 
           stage("Docker build") {
                steps {
-                    sh "docker build -t leszko/calculator:${BUILD_TIMESTAMP} ."
+                    dir('Chapter08/sample1') {
+                         sh "docker build -t leszko/calculator:${BUILD_TIMESTAMP} ."
+                    }
                }
           }
 
           stage("Docker login") {
                steps {
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials',
-                               usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                         sh "docker login --username $USERNAME --password $PASSWORD"
+                    dir('Chapter08/sample1') {
+                         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials',
+                                   usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                              sh "docker login --username $USERNAME --password $PASSWORD"
+                              }
                     }
                }
           }
 
           stage("Docker push") {
                steps {
-                    sh "docker push leszko/calculator:${BUILD_TIMESTAMP}"
+                    dir('Chapter08/sample1') {
+                         sh "docker push leszko/calculator:${BUILD_TIMESTAMP}"
+                    }
                }
           }
 
           stage("Update version") {
                steps {
-                    sh "sed  -i 's/{{VERSION}}/${BUILD_TIMESTAMP}/g' calculator.yaml"
+                    dir('Chapter08/sample1') {
+                         sh "sed  -i 's/{{VERSION}}/${BUILD_TIMESTAMP}/g' calculator.yaml"
+                    }
                }
           }
           
           stage("Deploy to staging") {
                steps {
-                    sh "kubectl config use-context staging"
-                    sh "kubectl apply -f hazelcast.yaml"
-                    sh "kubectl apply -f calculator.yaml"
+                    dir('Chapter08/sample1') {
+                         sh "kubectl config use-context staging"
+                         sh "kubectl apply -f hazelcast.yaml"
+                         sh "kubectl apply -f calculator.yaml"
+                    }
                }
           }
 
           stage("Acceptance test") {
                steps {
-                    sleep 60
-                    sh "chmod +x acceptance-test.sh && ./acceptance-test.sh"
+                    dir('Chapter08/sample1') {
+                         sleep 60
+                         sh "chmod +x acceptance-test.sh && ./acceptance-test.sh"
+                    }
                }
           }
 
           stage("Release") {
                steps {
-                    sh "kubectl config use-context production"
-                    sh "kubectl apply -f hazelcast.yaml"
-                    sh "kubectl apply -f calculator.yaml"
+                    dir('Chapter08/sample1') {
+                         sh "kubectl config use-context production"
+                         sh "kubectl apply -f hazelcast.yaml"
+                         sh "kubectl apply -f calculator.yaml"
+                    }
                }
           }
           stage("Smoke test") {
               steps {
+               dir('Chapter08/sample1'){
                   sleep 60
                   sh "chmod +x smoke-test.sh && ./smoke-test.sh"
+               }
               }
           }
 
