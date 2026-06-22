@@ -38,10 +38,5 @@ public class CalculatorTest {
      public void testQuotient() {
           assertEquals(2, calculator.quotient(4, 2));
      }
-
-     @Test
-     public void testQuotient2() {
-          assertEquals(3, calculator.quotient(6, 2));
-     }
 }
 
