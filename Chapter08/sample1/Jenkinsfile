@@ -1,8 +1,5 @@
 pipeline {
      agent {label 'docker-agent'}
-     triggers {
-          pollSCM('* * * * *')
-     }
      stages {
           stage("Compile") {
                steps {
@@ -14,16 +11,22 @@ pipeline {
                     sh "./gradlew test"
                }
           }
-          stage("Code coverage") {
+          // Should only activate when .java is changed
+          stage ('Code Coverage') {
+               when {
+                    changeset "**/*.java"  // Triggers only of .java files are changes
+               }
                steps {
                     sh "./gradlew jacocoTestReport"
                     sh "./gradlew jacocoTestCoverageVerification"
                }
           }
           stage("Static code analysis") {
+               when {
+                    changeset "**/*.java"  // Triggers only of .java files are changes
+               }
                steps {
                     sh "./gradlew checkstyleMain"
-
                     publishHTML (
                          target: [
                               reportDir: 'Chapter08/sample1/build/reports/checkstyle',   
@@ -34,7 +37,10 @@ pipeline {
           }
 
           stage("Checkstyle Test") {
-               steps {
+               when {
+                  changeset "**/*.java"  // Triggers only of .java files are changes
+               }
+               steps {  
                     sh "./gradlew checkstyleTest"
 
                     publishHTML (
