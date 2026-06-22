@@ -14,10 +14,10 @@ public class Calculator {
 		return a + b;
 	}
 
-	// @Cacheable("difference")
-	// public int difference(int a, int b) {
-	// 	return a - b;
-	// }
+	@Cacheable("difference")
+	public int difference(int a, int b) {
+		return a - b;
+	}
 
 	@Cacheable("product")
 	public int product(int a, int b) {
