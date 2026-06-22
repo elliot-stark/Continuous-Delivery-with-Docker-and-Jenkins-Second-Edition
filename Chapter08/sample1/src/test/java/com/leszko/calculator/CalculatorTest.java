@@ -21,12 +21,17 @@ public class CalculatorTest {
 
      @Test
      public void testDifference2() {
-          assertEquals(5, calculator.difference(8, 3));
+          assertEquals(3, calculator.difference(8, 5));
      }
 
      @Test
      public void testProduct() {
           assertEquals(6, calculator.product(2, 3));
+     }
+
+     @Test
+     public void testProduct2() {
+          assertEquals(24, calculator.product(6, 4));
      }
 
      @Test
