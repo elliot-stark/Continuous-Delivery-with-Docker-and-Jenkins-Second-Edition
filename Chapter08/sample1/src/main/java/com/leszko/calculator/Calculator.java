@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public class Calculator {
         final static int umlNUMBER1 = 3;
 	@Cacheable("sum")
-	public int sum(int a, int b) {
-		return a + b;
+	public int sum(int a, int c) {
+		return a + c;
 	}
 
 	@Cacheable("difference")
