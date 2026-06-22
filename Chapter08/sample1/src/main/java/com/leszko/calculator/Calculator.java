@@ -9,16 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class Calculator {
         final static int umlNUMBER1 = 3;
-	
-	@Cacheable("difference")
-	public int difference(int a, int b) {
-		return a - b;
-	}
-	
 	@Cacheable("sum")
 	public int sum(int a, int b) {
 		return a + b;
 	}
+
+	// @Cacheable("difference")
+	// public int difference(int a, int b) {
+	// 	return a - b;
+	// }
 
 	@Cacheable("product")
 	public int product(int a, int b) {
