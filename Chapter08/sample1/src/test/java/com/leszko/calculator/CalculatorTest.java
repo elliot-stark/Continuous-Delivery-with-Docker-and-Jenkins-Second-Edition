@@ -14,10 +14,15 @@ public class CalculatorTest {
           assertEquals(5, calculator.sum(2, 3));
      }
 
-     // @Test
-     // public void testDifference() {
-     //      assertEquals(1, calculator.difference(3, 2));
-     // }
+     @Test
+     public void testDifference() {
+          assertEquals(1, calculator.difference(3, 2));
+     }
+
+     @Test
+     public void testDifference2() {
+          assertEquals(5, calculator.difference(8, 3));
+     }
 
      @Test
      public void testProduct() {
