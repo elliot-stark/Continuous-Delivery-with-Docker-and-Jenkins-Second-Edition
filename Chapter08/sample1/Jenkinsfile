@@ -134,11 +134,6 @@ pipeline {
                          sh "kubectl config use-context staging"
                          sh "kubectl apply -f hazelcast.yaml"
                          sh "kubectl apply -f calculator.yaml"
-               //           sh '''
-               //      NODE_NAME=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
-               //      INTERNAL_IP=$(kubectl get node $NODE_NAME -o jsonpath='{.status.addresses[?(@.type=="InternalIP")].address}')
-               //      kubectl patch node $NODE_NAME --subresource=status --type=json -p "[{\\"op\\":\\"add\\",\\"path\\":\\"/status/addresses/-\\",\\"value\\":{\\"type\\":\\"ExternalIP\\",\\"address\\":\\"$INTERNAL_IP\\"}}]" || true
-               // '''
                     }
                }
           }
