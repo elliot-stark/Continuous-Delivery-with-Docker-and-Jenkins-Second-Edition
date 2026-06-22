@@ -31,7 +31,7 @@ public class CalculatorTest {
 
      @Test
      public void testProduct2() {
-          assertEquals(24, calculator.product(6, 4));
+          assertEquals(12, calculator.product(4, 3));
      }
 
      @Test
