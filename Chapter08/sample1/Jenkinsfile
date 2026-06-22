@@ -20,6 +20,14 @@ pipeline {
                     sh "./gradlew jacocoTestReport"
                     sh "./gradlew jacocoTestCoverageVerification"
                }
+               post {
+                    success {
+                         echo "pipeline ran perfectly"
+                    }
+                    failure {
+                         echo "pipeline failure"
+                    }
+               }
           }
           stage("Static code analysis") {
                when {
@@ -33,6 +41,14 @@ pipeline {
                               reportFiles: 'main.html',reportName: "jacoco checkstyle main report"
                               ]
                          )
+               }
+               post {
+                    success {
+                         echo "pipeline ran perfectly"
+                    }
+                    failure {
+                         echo "pipeline failure"
+                    }
                }
           }
 
@@ -49,6 +65,14 @@ pipeline {
                               reportFiles: 'test.html',reportName: "jacoco checkstyle"
                               ]
                          )
+               }
+               post {
+                    success {
+                         echo "pipeline ran perfectly"
+                    }
+                    failure {
+                         echo "pipeline failure"
+                    }
                }
           }
 
