@@ -26,14 +26,6 @@ pipeline {
                          sh "./gradlew jacocoTestCoverageVerification"
                     }
                }
-               post {
-                    success {
-                         echo "pipeline ran perfectly"
-                    }
-                    failure {
-                         echo "pipeline failure"
-                    }
-               }
           }
           stage("Static code analysis") {
                when {
@@ -50,14 +42,6 @@ pipeline {
                          )
                     }
                }
-               post {
-                    success {
-                         echo "pipeline ran perfectly"
-                    }
-                    failure {
-                         echo "pipeline failure"
-                    }
-               }
           }
 
           stage("Checkstyle Test") {
@@ -72,15 +56,7 @@ pipeline {
                                    reportDir: 'build/reports/checkstyle',   
                                    reportFiles: 'test.html',reportName: "jacoco checkstyle"
                                    ]
-                              )
-                    }
-               }
-               post {
-                    success {
-                         echo "pipeline ran perfectly"
-                    }
-                    failure {
-                         echo "pipeline failure"
+                         )
                     }
                }
           }
@@ -166,4 +142,8 @@ pipeline {
           }
 
      }
+     post {
+          success { echo "pipeline ran perfectly" }
+          failure { echo "pipeline failure" }
+          }
 }
