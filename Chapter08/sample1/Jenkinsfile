@@ -44,9 +44,9 @@ pipeline {
                }
           }
           stage("Static code analysis") {
-               when {
-                    changeset "**/*.java"  // Triggers only of .java files are changes
-               }
+               // when {
+               //      changeset "**/*.java"  // Triggers only of .java files are changes
+               // }
                steps {
                     dir('Chapter08/sample1') {
                          sh "./gradlew checkstyleMain"
@@ -61,9 +61,9 @@ pipeline {
           }
 
           stage("Checkstyle Test") {
-               when {
-                  changeset "**/*.java"  // Triggers only of .java files are changes
-               }
+               // when {
+               //    changeset "**/*.java"  // Triggers only of .java files are changes
+               // }
                steps {  
                     dir('Chapter08/sample1') {
                          sh "./gradlew checkstyleTest"
