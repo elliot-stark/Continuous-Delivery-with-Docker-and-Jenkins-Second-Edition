@@ -1,6 +1,21 @@
 pipeline {
      agent {label 'docker-agent'}
      stages {
+          stage ("Check Branches") {
+               when {
+                    not {
+                         anyOf {
+                              branch "main"
+                              branch "feature*"
+                         }
+                    }
+               }
+               steps {
+                    error("pipeline failure, does not recognize branch '${env.BRANCH_NAME}'")
+
+               }
+          }
+          
           stage("Compile") {
                steps {
                     dir('Chapter08/sample1') {
@@ -18,7 +33,8 @@ pipeline {
           // Should only activate when .java is changed
           stage ('Code Coverage') {
                when {
-                    changeset "**/*.java"
+                    branch "main"
+                    // changeset "**/*.java"
                }
                steps {
                     dir('Chapter08/sample1') {
