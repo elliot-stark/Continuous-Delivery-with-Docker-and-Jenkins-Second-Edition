@@ -15,6 +15,15 @@ pipeline {
 
                }
           }
+
+          stage("Debug Gradle Home") {
+               steps {
+                    sh "echo GRADLE_USER_HOME=\$GRADLE_USER_HOME"
+                    sh "ls -la /home/jenkins/.gradle || echo 'directory empty or missing'"
+                    sh "du -sh /home/jenkins/.gradle/caches 2>/dev/null || echo 'no caches folder'"
+                    sh "mount | grep gradle || echo 'gradle-cache not mounted here'"
+               }
+          }
           
           stage("Compile") {
                steps {
