@@ -35,4 +35,4 @@ The [exercise2](exercise2) directory contains the complete Hello World service t
 
 test3
 
-Test to RUN for multibranch
+Test to RUN for multibranch exercise 6
