@@ -87,7 +87,7 @@ pipeline {
 
           stage("Install Docker CLI") {
                steps {
-                    dir('week7') {
+                    dir('Chapter08/sample1') {
                          sh '''
                               curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-24.0.7.tgz -o docker.tgz
                               tar xzf docker.tgz
@@ -99,7 +99,7 @@ pipeline {
           }
           stage("Docker build") {
                steps {
-                    dir('week7') {
+                    dir('Chapter08/sample1') {
                          sh '''
                               export PATH=$PWD/docker:$PATH
                               docker build -t echo326312/calculator:${BUILD_TIMESTAMP} .
@@ -113,7 +113,10 @@ pipeline {
                     dir('Chapter08/sample1') {
                          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials',
                                    usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                              sh "docker login --username $USERNAME --password $PASSWORD"
+                              sh '''
+                                   export PATH=$PWD/docker:$PATH
+                                   echo "$PASSWORD" | docker login --username "$USERNAME" --password-stdin
+                              '''
                               }
                     }
                }
@@ -122,7 +125,10 @@ pipeline {
           stage("Docker push") {
                steps {
                     dir('Chapter08/sample1') {
-                         sh "docker push echo326312/calculator:${BUILD_TIMESTAMP}"
+                         sh '''
+                              export PATH=$PWD/docker:$PATH
+                              docker push echo326312/calculator:${BUILD_TIMESTAMP}
+                         '''
                     }
                }
           }
